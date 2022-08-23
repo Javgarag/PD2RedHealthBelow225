@@ -35,6 +35,17 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_RedHealth", function(
 	end
 
 	RedHealth:Load()
+
+	if RedHealth._data.health_value == nil then
+		RedHealth._data.health_value = 225
+		RedHealth:Save()
+	end
+
+	if RedHealth._data.customhud == nil then
+		RedHealth._data.customhud = "off"
+		RedHealth:Save()
+	end
+	
 	MenuHelper:LoadFromJsonFile( RedHealth._path .. "menu/health225menu.json", RedHealth, RedHealth._data )
 end )
 
