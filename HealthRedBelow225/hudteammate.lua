@@ -26,13 +26,13 @@ if RedHealth._data.customhud_fix == "on" then
 		})
 	end)
 
-	Hooks:PostHook(HUDTeammateCustom, "set_health", "radial_health_red_customhud", function (self, data)
+	Hooks:PostHook(PlayerInfoComponent.PlayerStatus, "set_health", "radial_health_red_customhud", function (self, current, total)
 		
-		local red = (data.current / data.total) -- New health percentage (*100)
+		local red = (current / total) -- New health percentage (*100)
 		log(red)
-		local currentHealth = data.current * 10
-		local radial_health_red = Radial_health_panel_customhud:child("health_radial_red")
-		local radial_health = Radial_health_panel_customhud:child("health_radial")
+		local currentHealth = current * 10
+		local radial_health_red = self._health_radial_red:child("health_radial_red")
+		local radial_health = self._health_radial:child("health_radial")
 
 		if red ~= nil then
 
