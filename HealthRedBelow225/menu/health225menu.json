@@ -12,7 +12,7 @@
 			"title" : "rh_customhud_fix_title",
 			"description" : "rh_customhud_fix_desc",
 			"callback" : "callback_rh_customhud",
-			"value" : "customhud",
+			"value" : "customhud_fix",
 			"default_value" : false
 		},
 

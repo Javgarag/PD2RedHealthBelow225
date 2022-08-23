@@ -25,7 +25,7 @@ end)
 
 Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_RedHealth", function( menu_manager )
 	MenuCallbackHandler.callback_rh_customhud = function(self, item)
-		RedHealth._data.customhud = item:value()
+		RedHealth._data.customhud_fix = item:value()
 		RedHealth:Save()
 	end
 
@@ -41,8 +41,8 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_RedHealth", function(
 		RedHealth:Save()
 	end
 
-	if RedHealth._data.customhud == nil then
-		RedHealth._data.customhud = "false"
+	if RedHealth._data.customhud_fix == nil then
+		RedHealth._data.customhud_fix = false
 		RedHealth:Save()
 	end
 	
