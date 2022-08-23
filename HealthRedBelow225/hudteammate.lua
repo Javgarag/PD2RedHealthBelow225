@@ -1,7 +1,7 @@
 local RedHealth = _G.RedHealth
 BLT.AssetManager:CreateEntry(Idstring("guis/textures/custom/hud_health_below_225"), Idstring("texture"), ModPath.. "guis/textures/pd2/hud_health_below_225.texture")
 
-if RedHealth._data.customhud_fix == "on" then
+if RedHealth._data.customhud_fix == "on" or RedHealth._data.customhud_fix == true then
 	Hooks:PostHook(PlayerInfoComponent.PlayerStatus, "init", "radial_health_red_customhud_init", function (self, panel, owner, width, height, settings)
 		VHUDPlus = _G.VHUDPlus
 		self._size = height
