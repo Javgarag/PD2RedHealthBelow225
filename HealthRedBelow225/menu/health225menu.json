@@ -3,7 +3,7 @@
 	"parent_menu_id": "blt_options",
 	"title": "redhealth_title",
 	"description": "redhealth_desc",
-	"back_callback": "callback_redhealth",
+	"back_callback": "redhealth_save",
 	"items":
 	[
 		{

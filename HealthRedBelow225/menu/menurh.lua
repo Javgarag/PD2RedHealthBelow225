@@ -24,13 +24,18 @@ Hooks:Add("LocalizationManagerPostInit", "LocalizationManagerPostInit_RedHealth"
 end)
 
 Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_RedHealth", function( menu_manager )
+
+	MenuCallbackHandler.redhealth_save = function(self, item)
+		RedHealth:Save()
+	end
+
 	MenuCallbackHandler.callback_rh_customhud = function(self, item)
 		RedHealth._data.customhud_fix = item:value()
 		RedHealth:Save()
 	end
 
 	MenuCallbackHandler.callback_rh_health_value = function(self, item)
-		RedHealth._data.health_value = item:value()
+		RedHealth._data.health_value = item:value() == "on"
 		RedHealth:Save()
 	end
 
@@ -42,7 +47,7 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_RedHealth", function(
 	end
 
 	if RedHealth._data.customhud_fix == nil then
-		RedHealth._data.customhud_fix = false
+		RedHealth._data.customhud_fix = "off"
 		RedHealth:Save()
 	end
 	
