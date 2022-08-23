@@ -1,8 +1,6 @@
 local RedHealth = _G.RedHealth
 BLT.AssetManager:CreateEntry(Idstring("guis/textures/custom/hud_health_below_225"), Idstring("texture"), ModPath.. "guis/textures/pd2/hud_health_below_225.texture")
 
-log(RedHealth._data.customhud_fix)
-
 if RedHealth._data.customhud_fix == "on" then
 	Hooks:PostHook(PlayerInfoComponent.PlayerStatus, "init", "radial_health_red_customhud_init", function (self, panel, owner, width, height, settings)
 		VHUDPlus = _G.VHUDPlus
@@ -29,7 +27,6 @@ if RedHealth._data.customhud_fix == "on" then
 	Hooks:PostHook(PlayerInfoComponent.PlayerStatus, "set_health", "radial_health_red_customhud", function (self, current, total)
 		
 		local red = (current / total) -- New health percentage (*100)
-		log(red)
 		local currentHealth = current * 10
 		local radial_health_red = self._panel:child("health_radial_red")
 		local radial_health = self._panel:child("health_radial")
