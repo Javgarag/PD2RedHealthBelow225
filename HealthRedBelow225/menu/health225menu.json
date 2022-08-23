@@ -1,0 +1,32 @@
+{
+	"menu_id": "health225menu",
+	"parent_menu_id": "blt_options",
+	"title": "redhealth_title",
+	"description": "redhealth_desc",
+	"back_callback": "callback_redhealth",
+	"items":
+	[
+		{
+			"type" : "toggle",
+			"id" : "rh_customhud_version",
+			"title" : "rh_customhud_fix_title",
+			"description" : "rh_customhud_fix_desc",
+			"callback" : "callback_rh_customhud",
+			"value" : "customhud",
+			"default_value" : false
+		},
+
+		{
+			"type" : "slider",
+			"id" : "rh_health_value",
+			"title" : "rh_health_value_title",
+			"description" : "rh_health_value_desc",
+			"callback" : "callback_rh_health_value",
+			"value" : "health_value",
+			"default_value" : 225,
+			"max" : 500,
+			"min" : 1,
+			"step" : 1
+		}
+	]
+}
