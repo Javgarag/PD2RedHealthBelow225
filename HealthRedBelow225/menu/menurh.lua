@@ -47,7 +47,7 @@ Hooks:Add( "MenuManagerInitialize", "MenuManagerInitialize_RedHealth", function(
 	end
 
 	if RedHealth._data.customhud_fix == nil then
-		RedHealth._data.customhud_fix = "off"
+		RedHealth._data.customhud_fix = false
 		RedHealth:Save()
 	end
 	
