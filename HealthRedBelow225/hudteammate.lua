@@ -31,7 +31,7 @@ if RedHealth._data.customhud_fix == "on" then
 		local red = (current / total) -- New health percentage (*100)
 		log(red)
 		local currentHealth = current * 10
-		local radial_health_red = self._health_radial_red:child("health_radial_red")
+		local radial_health_red = self._radial_health_red:child("health_radial_red")
 		local radial_health = self._health_radial:child("health_radial")
 
 		if red ~= nil then
