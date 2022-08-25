@@ -24,11 +24,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v1.2.0 #${{ github.ref }}
-        release_name: Release 1.1.1
+        release_name: Release 1.1.2
         draft: false
         prerelease: false
         body: |
-          This release zip is automatically updated on every push. You can ignore the "x commits behind" message.
+          Fix for CustomHUD stoic.
     - name: Upload Mod Zip to Release
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1

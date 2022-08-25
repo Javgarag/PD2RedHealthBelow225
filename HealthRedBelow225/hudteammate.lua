@@ -34,11 +34,29 @@ if RedHealth._data.customhud_fix == "on" or RedHealth._data.customhud_fix == tru
 		if red ~= nil then
 
 			if currentHealth <= RedHealth._data.health_value then
-				radial_health_red:set_color(Color(1, red, 1, 1))
-				radial_health:stop()
-				radial_health:set_color(Color(1, 0, 1, 1))
+
+				radial_health:set_visible(false)
+	
+				if red > radial_health:color().red then -- If new health is higher than old health
+	
+					radial_health_red:animate(function (o)
+						local s = radial_health_red:color().r
+						local e = red
+						local health_ratio = nil
+		
+						over(0.2, function (p)
+							health_ratio = math.lerp(s, e, p)
+							radial_health_red:set_color(Color(1, health_ratio, 1, 1))
+						end)
+					end)
+	
+				else
+					radial_health_red:set_color(Color(1, red, 1, 1))
+				end
+				
 			else
 				radial_health_red:set_color(Color(1, 0, 1, 1))
+				radial_health:set_visible(true)
 			end
 
 		end

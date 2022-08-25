@@ -2,7 +2,7 @@
     {
         "ident" : "pd2_red_health_below_225",
         "hash" : "%HASH%",
-        "patchnotes_url" : "htpps://example.com",
+        "patchnotes_url" : "https://github.com/Javgarag/PD2RedHealthBelow225/releases/tag/v1.2.0",
         "download_url" : "https://github.com/Javgarag/PD2RedHealthBelow225/releases/download/v1.2.0/changehealthred.zip"
     }
 ]
