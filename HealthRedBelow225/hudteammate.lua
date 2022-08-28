@@ -36,6 +36,7 @@ if RedHealth._data.customhud_fix == "on" or RedHealth._data.customhud_fix == tru
 			if currentHealth <= RedHealth._data.health_value then
 
 				radial_health:set_visible(false)
+				radial_health_red:set_visible(true)
 	
 				if red > radial_health:color().red then -- If new health is higher than old health
 	
@@ -55,7 +56,8 @@ if RedHealth._data.customhud_fix == "on" or RedHealth._data.customhud_fix == tru
 				end
 				
 			else
-				radial_health_red:set_color(Color(1, 0, 1, 1))
+				radial_health_red:set_color(Color(1, red, 1, 1))
+				radial_health_red:set_visible(false)
 				radial_health:set_visible(true)
 			end
 
@@ -95,8 +97,9 @@ Hooks:PostHook(HUDTeammate, "set_health", "redHealthBelow225", function(self, da
 		if currentHealth <= RedHealth._data.health_value then
 
 			radial_health:set_visible(false)
+			radial_health_red:set_visible(true)
 
-			if red > radial_health:color().red then -- If new health is higher than old health
+			if red > radial_health:color().red then -- If new health is higher than old health but still lower than the health_value
 
 				radial_health_red:animate(function (o)
 					local s = radial_health_red:color().r
@@ -109,12 +112,13 @@ Hooks:PostHook(HUDTeammate, "set_health", "redHealthBelow225", function(self, da
 					end)
 				end)
 
-			else
+			else -- If it's more damage
 				radial_health_red:set_color(Color(1, red, 1, 1))
 			end
 			
-		else
-			radial_health_red:set_color(Color(1, 0, 1, 1))
+		else -- If it's higher than old health and higher than health_value
+			radial_health_red:set_color(Color(1, red, 1, 1))
+			radial_health_red:set_visible(false)
 			radial_health:set_visible(true)
 		end
 
