@@ -7,16 +7,6 @@
 	"items":
 	[
 		{
-			"type" : "toggle",
-			"id" : "rh_customhud_version",
-			"title" : "rh_customhud_fix_title",
-			"description" : "rh_customhud_fix_desc",
-			"callback" : "callback_rh_customhud",
-			"value" : "customhud_fix",
-			"default_value" : false
-		},
-
-		{
 			"type" : "slider",
 			"id" : "rh_health_value",
 			"title" : "rh_health_value_title",
