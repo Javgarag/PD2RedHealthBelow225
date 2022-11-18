@@ -1,7 +1,6 @@
 local RedHealth = _G.RedHealth
 BLT.AssetManager:CreateEntry(Idstring("guis/textures/custom/hud_health_below_225"), Idstring("texture"), ModPath.. "guis/textures/pd2/hud_health_below_225.texture")
 
--- Get mod fix
 local MUIIsActive = _G.ArmStatic
 if MUIIsActive == nil then
 	log("Not Using MUI")
@@ -78,36 +77,38 @@ if CustomHudIsActive and tostring(RequiredScript) == "lib/managers/hud/Hudteamma
 	end)
 end
 
-if MUIIsActive then --RedHealth._data.mui_fix == "on" or RedHealth._data.mui_fix == true then
+if MUIIsActive then
 	if tostring(RequiredScript) == "lib/managers/hudmanagerpd2" then
 
 		Hooks:PostHook(HUDManager, "_create_teammates_panel", "radial_health_red_mui", function(self)
-			self.radial_health_red_mui = self._teammate_panels[self.PLAYER_PANEL]._radial_health_panel:bitmap({
-				texture = "guis/textures/custom/hud_health_below_225",
-				name = "radial_health_red_mui",
-				layer = 4,
-				blend_mode = "add",
-				render_template = "VertexColorTexturedRadial",
-				texture_rect = {
-					128,	
-					0,
-					-128,
-					128
-				},
-				color = Color(1, 0, 1, 1),
-				w = self._teammate_panels[self.PLAYER_PANEL]._radial_health_panel:w(),
-				h = self._teammate_panels[self.PLAYER_PANEL]._radial_health_panel:h()
-			})
-			--log("Created RedHealth panel with w: ".. tostring(self._teammate_panels[self.PLAYER_PANEL]._radial_health_panel:w()).. " , h: ".. tostring(self._teammate_panels[self.PLAYER_PANEL]._radial_health_panel:w()))
-			self.radial_health_red_mui:set_visible(true)
+
+			for i = 1, self.PLAYER_PANEL do
+				self["radial_health_red_mui_player_"..tostring(i)] = self._teammate_panels[i]._radial_health_panel:bitmap({
+					texture = "guis/textures/custom/hud_health_below_225",
+					name = "radial_health_red_mui",
+					layer = 4,
+					blend_mode = "add",
+					render_template = "VertexColorTexturedRadial",
+					texture_rect = {
+						128,	
+						0,
+						-128,
+						128
+					},
+					color = Color(1, 0, 1, 1),
+					w = self._teammate_panels[i]._radial_health_panel:w(),
+					h = self._teammate_panels[i]._radial_health_panel:h()
+				})
+				self["radial_health_red_mui_player_"..tostring(i)]:set_visible(true)
+			end
+			
 		end)
 
 		Hooks:PostHook(HUDManager, "set_teammate_health", "redHealthBelow225_mui", function(self, i, data)
 				local red = data.current / data.total -- New health percentage (*100)
 				local currentHealth = data.current * 10
-				local radial_health_red = self.radial_health_red_mui
-				local players = HUDManager.PLAYER_PANEL
-				local radial_health = self._teammate_panels[self.PLAYER_PANEL]._radial_health -- Access to MUITeammate
+				local radial_health_red = self["radial_health_red_mui_player_"..tostring(i)]
+				local radial_health = self._teammate_panels[i]._radial_health -- Access to MUITeammate
 		
 				if red ~= nil then
 		
