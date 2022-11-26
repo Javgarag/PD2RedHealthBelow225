@@ -203,6 +203,22 @@ if VoidUIIsActive then
 			color = Color.white
 		})
 
+		local detect_value_red = health_panel:text({
+			name = "detect_value_red",
+			w = self._health_value,
+			h = self._health_value,
+			font_size = self._main_player and self._health_value / 1.5 or self._health_value / 1.7,
+			text = "75%",
+			vertical = "top",
+			align = "center",
+			font = "fonts/font_medium_noshadow_mf",
+			layer = 5,
+			color = Color.white,
+			visible = false
+		})	
+		detect_value_red:set_top(health_panel:child("health_background"):top() + 3)
+		detect_value_red:set_right(health_panel:child("health_background"):right() - (self._main_player and 3 or 1))
+
 		local downs_value_red = health_panel:text({
 			name = "downs_value_red",
 			w = self._health_value,
@@ -240,6 +256,20 @@ if VoidUIIsActive then
 
 	end)
 
+	Hooks:PostHook(HUDTeammate, "set_bodybags", "radial_health_red_bodybags_voidui", function(self)
+		local health_panel = self._custom_player_panel:child("health_panel")
+		local detect_value = health_panel:child("detect_value_red")
+		detect_value:set_text("x"..tostring(managers.player:get_body_bags_amount()))
+	end)
+
+	Hooks:PostHook(HUDTeammate, "set_detection", "radial_health_red_detection_voidui", function(self)
+		local health_panel = self._custom_player_panel:child("health_panel")
+		local detect_value = health_panel:child("detect_value_red")
+		if self:peer_id() then
+			detect_value:set_text(string.format("%.0f", managers.blackmarket:get_suspicion_offset_of_peer(managers.network:session():peer(self:peer_id()), tweak_data.player.SUSPICION_OFFSET_LERP or 0.75) * 100).."%")
+		end
+	end)
+
 	Hooks:PostHook(HUDTeammate, "set_callsign", "radial_health_red_callsign_voidui", function(self, id)
 		if self._ai then return end
 		Color_red = Color(0.98823529411, 0.33725490196, 0.33725490196) -- RGB 194, 68, 68
@@ -251,6 +281,7 @@ if VoidUIIsActive then
 		health_panel:child("health_value_red"):set_color(Color_red * 0.4 + Color.black * 0.5)
 		health_panel:child("armor_value_red"):set_color(Color_red * 0.4 + Color.black * 0.5)
 		health_panel:child("delayed_damage_health_bar_red"):set_color(Color_red * 0.4 + Color.black * 0.5)
+		health_panel:child("detect_value_red"):set_color(Color_red * 0.8 + Color.black * 0.5)
 	end)
 
 	Hooks:PostHook(HUDTeammate, "set_armor", "radial_health_red_armor_voidui", function(self, data)
@@ -327,6 +358,7 @@ if VoidUIIsActive then
 		local downs_value_red = health_panel:child("downs_value_red")
 		local armor_value_red = health_panel:child("armor_value_red")
 		local health_background_red = health_panel:child("health_background_red")
+		local detect_value_red = health_panel:child("detect_value_red")
 
 		local show_health_value = self._main_player and VoidUI.options.main_health or VoidUI.options.mate_health
 		local anim_time = self._main_player and VoidUI.options.main_anim_time or VoidUI.options.mate_anim_time
@@ -364,31 +396,63 @@ if VoidUIIsActive then
 
 		if CurrentHealth <= RedHealth._data.health_value then
 
+			local is_whisper_mode = managers.groupai and managers.groupai:state():whisper_mode()
+			local visible = true
+
 			health_panel:child("health_bar"):set_visible(false)
 			health_panel:child("health_value"):set_visible(false)
 			health_panel:child("health_background"):set_visible(false)
 			health_panel:child("downs_value"):set_visible(false)
+			health_panel:child("detect_value"):set_visible(false)
+
+			if is_whisper_mode == true then
+				if self._main_player then visible = VoidUI.options.main_stealth 
+				else visible = VoidUI.options.mate_stealth end
+				detect_value_red:set_visible(visible)
+				downs_value_red:set_visible(false)
+			elseif is_whisper_mode == false then
+				if self._main_player then visible = VoidUI.options.main_loud
+				else visible = VoidUI.options.mate_loud end
+				detect_value_red:set_visible(false)
+				downs_value_red:set_visible(visible)
+			end
+
 			health_panel:child("armor_value"):set_visible(false)
 			health_panel:child("delayed_damage_health_bar"):set_visible(false)
 			health_value_red:set_visible(true)
 			health_bar_red:set_visible(true)
 			armor_value_red:set_visible(true)
 			health_background_red:set_visible(true)
-			downs_value_red:set_visible(true)
 
 		else -- If it's higher than old health and higher than health_value
+
+			local is_whisper_mode = managers.groupai and managers.groupai:state():whisper_mode()
+			local visible = true
 
 			health_panel:child("health_bar"):set_visible(true)
 			health_panel:child("health_value"):set_visible(true)
 			health_panel:child("health_background"):set_visible(true)
 			health_panel:child("delayed_damage_health_bar"):set_visible(true)
 			health_panel:child("armor_value"):set_visible(true)
-			health_panel:child("downs_value"):set_visible(true)
+			
+			if is_whisper_mode == true then
+				if self._main_player then visible = VoidUI.options.main_stealth 
+				else visible = VoidUI.options.mate_stealth end
+				health_panel:child("detect_value"):set_visible(visible)
+				health_panel:child("downs_value"):set_visible(false)
+			elseif is_whisper_mode == false then
+				if self._main_player then visible = VoidUI.options.main_loud
+				else visible = VoidUI.options.mate_loud end
+				health_panel:child("detect_value"):set_visible(false)
+				health_panel:child("downs_value"):set_visible(visible)
+			end
+
 			health_value_red:set_visible(false)
 			health_bar_red:set_visible(false)
 			armor_value_red:set_visible(false)
 			health_background_red:set_visible(false)
 			downs_value_red:set_visible(false)
+			detect_value_red:set_visible(false)
 
 		end
 
