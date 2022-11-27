@@ -28,7 +28,7 @@ jobs:
         draft: false
         prerelease: false
         body: |
-          Fixed some problems with the VoidUI version.
+          Fixed a crash that could occur when using multiple HUD mods at once.
     - name: Upload Mod Zip to Release
       id: upload-release-asset 
       uses: actions/upload-release-asset@v1
