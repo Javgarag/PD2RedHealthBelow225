@@ -4,7 +4,9 @@ BLT.AssetManager:CreateEntry(Idstring("guis/textures/custom/hud_health_below_225
 -- // HUD compatibility checks \\ --
 
 if _G.ArmStatic then
-	MUIIsActive = true
+	if _G.MUIMenu:ClassEnabled(MUITeammate) == true then
+		MUIIsActive = true
+	end
 end
 
 if _G.VoidUI then
@@ -16,13 +18,12 @@ end
 if _G.VHUDPlus then
 	if _G.VHUDPlus:getSetting({"CustomHUD", "HUDTYPE"}, 2) == 3 then
 		CustomHudIsActive = true
-		log("Using CUSTOMHUD")
 	end
 end
 
 -- // RedHealth functions \\ --
 
-if CustomHudIsActive == true and tostring(RequiredScript) == "lib/managers/hud/hudteammate" then
+if CustomHudIsActive == true and tostring(RequiredScript) == "lib/managers/hud/hudteammate" and MUIIsActive ~= true and VoidUIIsActive ~= true then
 	Hooks:PostHook(PlayerInfoComponent.PlayerStatus, "init", "radial_health_red_customhud_init", function (self, panel, owner, width, height, settings)
 		self._size = height
 		Radial_health_panel_customhud = self._panel
@@ -85,7 +86,8 @@ if CustomHudIsActive == true and tostring(RequiredScript) == "lib/managers/hud/h
 	end)
 end
 
-if MUIIsActive then
+if MUIIsActive and CustomHudIsActive ~= true and VoidUIIsActive ~= true then
+	log("Doing MUI RedHealth")
 	if tostring(RequiredScript) == "lib/managers/hudmanagerpd2" then
 
 		Hooks:PostHook(HUDManager, "_create_teammates_panel", "radial_health_red_mui", function(self)
@@ -153,7 +155,9 @@ if MUIIsActive then
 	end
 end
 
-if VoidUIIsActive then
+if VoidUIIsActive and CustomHudIsActive ~= true and MUIIsActive ~= true then
+	log("Doing VOID RedHealth")
+
 	Hooks:PostHook(HUDTeammate, "init", "radial_health_red_voidui", function(self, i, teammates_panel, is_player, width)
 		local health_panel = self._panel:child("custom_player_panel"):child("health_panel")
 		local health_texture = "guis/textures/VoidUI/hud_health"
@@ -460,6 +464,7 @@ if VoidUIIsActive then
 end
 
 if not MUIIsActive or CustomHudIsActive or VoidUIIsActive then
+	log("Doing Normal RedHealth")
 	Hooks:PostHook(HUDTeammate, "_create_radial_health", "radial_health_red", function (self, radial_health_panel)
 		local radial_health_red = radial_health_panel:bitmap({
 			texture = "guis/textures/custom/hud_health_below_225",
