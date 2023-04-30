@@ -54,7 +54,16 @@ if CustomHudIsActive == true and tostring(RequiredScript) == "lib/managers/hud/h
 
 		if red ~= nil then
 
-			if currentHealth <= RedHealth._data.health_value then
+			Start_time = Start_time or Application:time()
+			local enough_time_passed = Application:time() - Start_time >= 1
+			if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+
+			local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
+			local real_damage_reduction = 1 - damage_reduction
+
+			local realHealth = currentHealth + (currentHealth * real_damage_reduction) -- Number of health points player has with added damage reductions
+
+			if realHealth <= RedHealth._data.health_value then
 
 				radial_health:set_visible(false)
 				radial_health_red:set_visible(true)
@@ -121,8 +130,17 @@ if MUIIsActive and CustomHudIsActive ~= true and VoidUIIsActive ~= true then
 				local radial_health = self._teammate_panels[i]._radial_health -- Access to MUITeammate
 		
 				if red ~= nil then
-		
-					if currentHealth <= RedHealth._data.health_value then
+					
+					Start_time = Start_time or Application:time()
+					local enough_time_passed = Application:time() - Start_time >= 1
+					if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+
+					local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
+					local real_damage_reduction = 1 - damage_reduction
+
+					local realHealth = currentHealth + (currentHealth * real_damage_reduction) -- Number of health points player has with added damage reductions
+
+					if realHealth <= RedHealth._data.health_value then
 		
 						radial_health:set_visible(false)
 						radial_health_red:set_visible(true)
@@ -332,7 +350,16 @@ if VoidUIIsActive and CustomHudIsActive ~= true and MUIIsActive ~= true then
 		
 		if CurrentHealth == nil then return end
 
-		if CurrentHealth < RedHealth._data.health_value then
+		Start_time = Start_time or Application:time()
+		local enough_time_passed = Application:time() - Start_time >= 1
+		if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+
+		local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
+		local real_damage_reduction = 1 - damage_reduction
+
+		local realHealth = CurrentHealth + (CurrentHealth * real_damage_reduction) -- Number of health points player has with added damage reductions
+
+		if realHealth < RedHealth._data.health_value then
 			if health_damage_ratio > 0 then
 				health_panel:child("delayed_damage_health_bar"):set_visible(false)
 			end
@@ -398,7 +425,16 @@ if VoidUIIsActive and CustomHudIsActive ~= true and MUIIsActive ~= true then
 			end)
 		end)
 
-		if CurrentHealth <= RedHealth._data.health_value then
+		Start_time = Start_time or Application:time()
+		local enough_time_passed = Application:time() - Start_time >= 1
+		if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+
+		local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
+		local real_damage_reduction = 1 - damage_reduction
+
+		local realHealth = CurrentHealth + (CurrentHealth * real_damage_reduction) -- Number of health points player has with added damage reductions
+
+		if realHealth <= RedHealth._data.health_value then
 
 			local is_whisper_mode = managers.groupai and managers.groupai:state():whisper_mode()
 			local visible = true
@@ -465,7 +501,7 @@ end
 
 if not MUIIsActive or CustomHudIsActive or VoidUIIsActive then
 	log("Doing Normal RedHealth")
-	Hooks:PostHook(HUDTeammate, "_create_radial_health", "radial_health_red", function (self, radial_health_panel)
+	Hooks:PostHook(HUDTeammate, "_create_radial_health", "radial_health_red", function (self, radial_health_panel) -- Create red circle
 		local radial_health_red = radial_health_panel:bitmap({
 			texture = "guis/textures/custom/hud_health_below_225",
 			name = "radial_health_red",
@@ -488,13 +524,23 @@ if not MUIIsActive or CustomHudIsActive or VoidUIIsActive then
 
 		local red = data.current / data.total -- New health percentage (*100)
 		local currentHealth = data.current * 10
+
+		Start_time = Start_time or Application:time()
+		local enough_time_passed = Application:time() - Start_time >= 1
+		if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+
+		local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
+		local real_damage_reduction = 1 - damage_reduction
+
+		local realHealth = currentHealth + (currentHealth * real_damage_reduction) -- Number of health points player has with added damage reductions
+
 		local radial_health_panel = self._radial_health_panel
 		local radial_health_red = radial_health_panel:child("radial_health_red")
 		local radial_health = radial_health_panel:child("radial_health")
 
 		if red ~= nil then
 
-			if currentHealth <= RedHealth._data.health_value then
+			if realHealth <= RedHealth._data.health_value then
 
 				radial_health:set_visible(false)
 				radial_health_red:set_visible(true)
