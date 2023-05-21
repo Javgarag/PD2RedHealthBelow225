@@ -54,9 +54,8 @@ if CustomHudIsActive == true and tostring(RequiredScript) == "lib/managers/hud/h
 
 		if red ~= nil then
 
-			Start_time = Start_time or Application:time()
-			local enough_time_passed = Application:time() - Start_time >= 1
-			if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+			
+			if not managers.player:player_unit() then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
 
 			local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
 			local real_damage_reduction = 1 - damage_reduction
@@ -131,9 +130,7 @@ if MUIIsActive and CustomHudIsActive ~= true and VoidUIIsActive ~= true then
 		
 				if red ~= nil then
 					
-					Start_time = Start_time or Application:time()
-					local enough_time_passed = Application:time() - Start_time >= 1
-					if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+					if not managers.player:player_unit() then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
 
 					local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
 					local real_damage_reduction = 1 - damage_reduction
@@ -350,9 +347,7 @@ if VoidUIIsActive and CustomHudIsActive ~= true and MUIIsActive ~= true then
 		
 		if CurrentHealth == nil then return end
 
-		Start_time = Start_time or Application:time()
-		local enough_time_passed = Application:time() - Start_time >= 1
-		if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+		if not managers.player:player_unit() then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
 
 		local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
 		local real_damage_reduction = 1 - damage_reduction
@@ -425,9 +420,7 @@ if VoidUIIsActive and CustomHudIsActive ~= true and MUIIsActive ~= true then
 			end)
 		end)
 
-		Start_time = Start_time or Application:time()
-		local enough_time_passed = Application:time() - Start_time >= 1
-		if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+		if not managers.player:player_unit() then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
 
 		local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
 		local real_damage_reduction = 1 - damage_reduction
@@ -525,9 +518,7 @@ if not MUIIsActive or CustomHudIsActive or VoidUIIsActive then
 		local red = data.current / data.total -- New health percentage (*100)
 		local currentHealth = data.current * 10
 
-		Start_time = Start_time or Application:time()
-		local enough_time_passed = Application:time() - Start_time >= 1
-		if not enough_time_passed then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
+		if not managers.player:player_unit() then return end -- So this beautiful game doesn't crash for soem reason when calling managers.player:yaddayadda
 
 		local damage_reduction = managers.player:damage_reduction_skill_multiplier("bullet")
 		local real_damage_reduction = 1 - damage_reduction
